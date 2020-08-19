@@ -1,7 +1,26 @@
 import Axios from 'axios';
 import Storage from '@/utils/storage';
 import configUrl from "./../config/index"
+const instance = axios.create();
 
+
+  //------------------添加请求拦截器---------------
+  instance.interceptors.request.use(function (config) {
+    // 在发送请求之前做些什么
+    return config;
+  }, function (error) {
+    // 对请求错误做些什么
+    return Promise.reject(error);
+  });
+
+// -----------------------添加响应拦截器------------------
+instance.interceptors.response.use(function (response) {
+    // 对响应数据做点什么
+    return response;
+  }, function (error) {
+    // 对响应错误做点什么
+    return Promise.reject(error);
+  });
 class Api{
 	constructor() {
 		// this.routeInfo = process.env.server;
@@ -17,9 +36,10 @@ class Api{
 	do(method, url, data, oUrl) {
 		url = (oUrl || this.routeInfo[url.split('/')[1]]) + '/' + (url.split('/').slice(2)).join('/');
 		return new Promise((resolve, reject) => {
-			Axios({
+			instance({
 				method,
 				url,
+				timeout: 3000,
 				params: data,
 				headers:this.headers
 			}).then(res=>{
