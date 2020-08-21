@@ -1,6 +1,7 @@
 import Axios from 'axios';
 import Storage from '@/utils/storage';
 import configUrl from "./../config/index"
+import router from './../route/route'
 
 class Api{
 	constructor() {
@@ -29,10 +30,17 @@ class Api{
 					//登录状态失效
 					reject(new Error(`token失效`));
 				} else {
-					if( res.data.code )
+					if( res.data.code ){
+						router.currentRoute.path !== 'login' &&
+						router.replace({
+						  path: 'login',
+						  query: { redirect: router.currentRoute.path },
+						})
 						reject(new Error(`${res.data.code}: ${res.data.msg}`));
-					else
+					}
+					else{
 						reject(new Error(`${res.data.msg}`));
+					}
 				}
 			}).catch(err=>{
 				reject(err)
