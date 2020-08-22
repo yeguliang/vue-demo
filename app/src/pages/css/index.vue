@@ -64,7 +64,6 @@ export default {
   destroyed() {}
 };
 </script>
-<style lang='scss' scoped>
-//@import url(); 引入公共css类
-@import url("./index.sass");
+<style lang='less' scoped>
+@import url("./index.less");
 </style>

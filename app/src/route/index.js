@@ -41,7 +41,7 @@ router.afterEach((to, from) => {
         window.document.title = to.meta.title;
         console.log(from)
     } else {
-        window.document.title = '世上最完整的vue-router案例'
+        window.document.title = '华顺科技'
     }
 })
 

@@ -53,7 +53,7 @@ export default {
         let result = [];
         arr.forEach((item, i, arr) => {
             if (Array.isArray(item)) {
-                result = result.concat(flatten(item));
+                result = result.concat(this.flatten(item));
             } else {
                 result.push(arr[i])
             }
@@ -116,26 +116,26 @@ export default {
         }
     },
       //判断访问终端
-    browser:{
-        versions: function () {
-        let u = navigator.userAgent, app = navigator.appVersion;
-        return {
-            trident: u.indexOf('Trident') > -1, //IE内核
-            presto: u.indexOf('Presto') > -1, //opera内核
-            webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
-            gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1,//火狐内核
-            mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
-            ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
-            android: u.indexOf('Android') > -1 || u.indexOf('Adr') > -1, //android终端
-            iPhone: u.indexOf('iPhone') > -1, //是否为iPhone或者QQHD浏览器
-            iPad: u.indexOf('iPad') > -1, //是否iPad
-            webApp: u.indexOf('Safari') == -1, //是否web应该程序，没有头部与底部
-            weixin: u.indexOf('MicroMessenger') > -1, //是否微信
-            qq: u.match(/\sQQ/i) == " qq" //是否QQ
-        };
-        }(),
-        language: (navigator.browserLanguage || navigator.language).toLowerCase()
-    },
+    // browser:{
+    //     versions: function () {
+    //     let u = navigator.userAgent, app = navigator.appVersion;
+    //     return {
+    //         trident: u.indexOf('Trident') > -1, //IE内核
+    //         presto: u.indexOf('Presto') > -1, //opera内核
+    //         webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+    //         gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1,//火狐内核
+    //         mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+    //         ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+    //         android: u.indexOf('Android') > -1 || u.indexOf('Adr') > -1, //android终端
+    //         iPhone: u.indexOf('iPhone') > -1, //是否为iPhone或者QQHD浏览器
+    //         iPad: u.indexOf('iPad') > -1, //是否iPad
+    //         webApp: u.indexOf('Safari') == -1, //是否web应该程序，没有头部与底部
+    //         weixin: u.indexOf('MicroMessenger') > -1, //是否微信
+    //         qq: u.match(/\sQQ/i) == " qq" //是否QQ
+    //     };
+    //     }(),
+    //     language: (navigator.browserLanguage || navigator.language).toLowerCase()
+    // },
 
     isPC() {
         /*true则pc，false则mobile*/
@@ -172,7 +172,7 @@ export default {
     cnNewID(idcard) {
       let arrExp = [7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2]; // 加权因子
       let arrValid = [1, 0, "X", 9, 8, 7, 6, 5, 4, 3, 2]; // 校验码
-      let sum = 0, idx;
+      let sum = 0;
         for (let j = 0; j < 17; j++) {
         // 对前17位数字与权值乘积求和
         sum += parseInt(idcard[j], 10) * arrExp[j];
@@ -226,7 +226,7 @@ export default {
           //当软键盘收起，在此处操作
          // _self.show_bo = true;
         }
-      };s
+      };
     },
     // ios：focusin和focusout支持冒泡，对应focus和blur, 使用focusin和focusout的原因是focusin和focusout可以冒泡，focus和blur不会冒泡，这样就可以使用事件代理，处理多个输入框存在的情况。
     isiOS() {

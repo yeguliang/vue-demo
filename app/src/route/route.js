@@ -26,6 +26,10 @@ export const routes = [
 		path: '/err',
 		component: require('@/pages/404').default
 	},
+	{
+		path: '/login',
+		component: require('@/pages/login').default
+	},
 	// {
 	//     path: '/html',
 	//     name: 'html',
