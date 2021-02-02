@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="/static/css/base.css" type="text/css" />
+  <link rel="stylesheet" href="/static/colorpicker/css/colorpicker.css" type="text/css" />
+  <link rel="stylesheet" media="screen" type="text/css" href="/static/colorpicker/css/layout.css" />
+  <link rel="stylesheet" href="/static/table-component/css/Table_style.css" type="text/css" />
+  <link rel="stylesheet" href="/static/table-component/css/Table_style_classic.css" type="text/css" />
+  <link rel="stylesheet" href="/static/table-component/css/lx_select.css" type="text/css" />
+</head>
+<style type="text/css">
+  #groupProduct {
+      background-color: white;
+      width: 800px;
+      height: 527px;
+      display: none;
+  }
+
+  ._pvalue_tr {
+      line-height: 40px;
+      border-bottom: 1px solid white;
+  }
+
+  ._pvalue_tr:nth-child(2n) {
+      background-color: #efefef;
+  }
+
+  ._pvalue_tr:hover {
+      border-bottom: 1px solid gray;
+  }
+
+  span.pageC, span.pageNo {
+      width: 35px;
+      height: 35px;
+      line-height: 35px;
+      text-align: center;
+      display: inline-block;
+      border: 1px solid rgb(66, 131, 187);
+      margin-left: 8px;
+      border-radius: 5px;
+  }
+
+  span.pageC {
+      background-color: #efefef;
+      border: 1px solid #efefef;
+  }
+
+  span.pageNo {
+      cursor: pointer;
+      color: rgb(66, 131, 187);
+  }
+
+  span.pageNo:hover {
+      background-color: rgb(66, 131, 187);
+      color: white;
+  }
+
+  #shopItems {
+      padding: 10px;
+      padding-top: 20px;
+  }
+
+  .shopItemDiv {
+      float: left;
+      margin-right: 10px;
+      margin-bottom: 15px;
+      border: 1px solid red;
+      padding: 3px 5px 2px 4px;
+      border-radius: 2px;
+      cursor: pointer;
+  }
+
+  .tr_td1 {
+      width: 150px;
+      line-height: 45px;
+      text-align: right;
+  }
+
+  .tr_td2 {
+      padding-left: 50px;
+  }
+
+  .colorpicker {
+      z-index: 9999;
+  }
+
+  .tab-div {
+      float: left;
+      cursor : pointer;
+      margin-left : 20px;
+      height : 35px;
+      line-height : 35px;
+      padding-left : 10px;
+      padding-right : 10px;
+  }
+  .tab-div-selected{
+      background-color : #212121;
+      color : white;
+  }
+  /* div.tab-container{
+      display : none;
+  } */
+  .amount-input{
+      width : 110px !important;
+  }
+  .reward-config-title{
+      border-bottom : 1px solid #dddddd;
+      width : 600px;
+      margin-top : 30px;
+      margin-bottom : 20px;
+  }
+  .reward-config-div{
+      margin-bottom : 20px;
+  }
+  #p_groupleader_table{
+      margin-top : 20px;
+  }
+  #p_groupleader_table td{
+      line-height : 50px;
+  }
+  .setInfo{
+      color : #aaaaaa;
+  }
+  #Template0 .names00{
+      display: none;
+  }
+  div.channelLine_1{
+      line-height : 25px;
+      padding-left : 10px;
+  }
+  .channelLine_1:hover{
+      background-color : #dedede;
+  }
+  .channelLine_1 span{
+      display : inline-block;
+      width : 150px;
+  }
+  .tip{
+    margin-top: 10px;
+  }
+  .flex-row{
+    display: flex;
+    flex-direction: row;
+    /* border: 1px solid red; */
+    /* align-items: center; */
+    /* justify-content: space-between; */
+  }
+  .flex-column{
+    display: flex;
+    flex-direction: column;
+  }
+  .none{
+    /* opacity: 0; */
+  }
+  .block{
+    /* opacity: 1; */
+  }
+</style>
+<body>
+    <form  id="groupProductForm">
+        <div class="tab-container" id="p_distributionSet" style="max-height: 440px; overflow-y: scroll">
+            <div style="padding : 10px; width : 670px; margin : auto;">
+            <div class="setInfo">
+                分销关系：B通过A分享链接进入小程序，则A和B即为分销关系；B再分享给C则A与C为二级分销关系；<br />
+                奖励冻结时间：考虑14天内用户可退货，建议奖励延迟14天发放 <br />
+                删除：清空本条奖励配置，保存设置后生效
+            </div>
+            <div id="inputRewardSource">
+                <div style="padding-top: 20px">
+                    <span style="padding-right: 80px">奖励冻结时间</span>
+                    <input type="text" class="Table_input amount-input Table-formData" id="freezeDays" msg="冻结时间不能为空" notNull="true" name="freezeDays" placeholder="天数" onkeyup="value=value.replace(/[^\d]/g,'')" />&nbsp;&nbsp;天
+                </div>
+                <p class="setInfo tip">自提：根据用户在门店的提货时间，开始计算奖励冻结时间</p>
+                <p class="setInfo">物流：根据用户确认收货的时间，开始计算奖励冻结时间</p>
+                <div style="padding-top: 20px;justify-content: space-between;" class="flex-row">
+                    <div>
+                      <span style="padding-right: 20px">奖励冻结时间</span>
+                    </div>
+                    <div>
+                      <input type="radio" name="is_custom" value="0" id="no_custom"/>
+                      <label for="no_custom">默认</label>
+                    </div>
+                    <div class="flex-column" style="min-height: 50px;width: 150px;">
+                      <div class="flex-row" style="min-height: 50px;">
+                        <input type="radio" name="is_custom" value="1" id="is_custom"/>
+                        <label for="is_custom">自定义</label>
+                      </div>
+                      <div class="flex-row" style="min-height: 50px; display: none;" id="settlement_policy_pay">
+                        <input type="radio" name="settlement_policy" value="pay"  />
+                        <label for="settlement_policy_pay">自提/确认收货后结算</label>
+                      </div>
+                      <div class="flex-row" style="min-height: 50px; display: none;" id="settlement_policy_finish">
+                        <input type="radio" name="settlement_policy" value="finish"  id="settlement_policy_finish_rd"/>
+                        <label for="settlement_policy_finish">支付完成后结算</label>
+                      </div>
+                    </div>
+                    <div class="flex-column" style="width: 300px;">
+                      <p style="min-height: 50px;">默认为全局配置中结算策略，如需修改，请选择自定义</p>
+                      <p style="min-height: 50px; display: none;"  id="settlement_policy_pay_des">顾客自提/确认收货后，系统开始计算奖励金时间，顾客在冻结期内退单可撤回奖励金，冻结期过后不允许退单</p>
+                      <p style="min-height: 50px; display: none;"  id="settlement_policy_finish_des">顾客支付完成后，系统开始计算奖励金时间，冻结期退单内可撤回奖励金，冻结期后退单不会撤回奖励金</p>
+                      <p style="color:#d9001c;" >注意：如顾客下单后一直不提货，等奖励金解冻后再申请退单，商家受理顾客的退单申请后，系统不会撤回已发放的奖励金，存在套取奖励金风险。</p>
+                    </div>
+                </div>
+                <div class="reward-config-title">
+                    KOL分销奖励
+                </div>
+                <div class="reward-config-div" name="kolLevelOne">
+                    <span style="padding-left : 20px; padding-right : 60px;">一级分销奖励</span>
+                    <input type="text" class="Table_input amount-input Table-formData" id="kolLevelOneAmount" value="0" msg="金额不能为空" notNull="true" name="kolLevelOneAmount" placeholder="输入金额" onkeyup="value=value.replace(/[^\d.]/g,'')" />&nbsp;&nbsp;元/每商品
+                </div>
+                <div class="reward-config-div" name="kolLevelTwo">
+                    <span style="padding-left : 20px; padding-right : 60px;">二级分销奖励</span>
+                    <input type="text" class="Table_input amount-input Table-formData" id="kolLevelTwoAmount" value="0" msg="金额不能为空" notNull="true" name="kolLevelTwoAmount" placeholder="输入金额" onkeyup="value=value.replace(/[^\d.]/g,'')" />&nbsp;&nbsp;元/每商品
+                </div>
+
+                <div class="reward-config-title">
+                    非KOL分销奖励
+                </div>
+                <div class="reward-config-div" name="nonKolLevelOne">
+                    <span style="padding-left : 20px; padding-right : 60px;">一级分销奖励</span>
+                    <input type="text" class="Table_input amount-input Table-formData" id="noKolAmount" value="0" msg="金额不能为空" notNull="true" name="noKolAmount" placeholder="输入金额" onkeyup="value=value.replace(/[^\d.]/g,'')" />&nbsp;&nbsp;元/每商品
+                </div>
+
+                <div class="reward-config-title">
+                    自购奖励
+                </div>
+                <div class="reward-config-div" name="groupleaderKol">
+                    <span style="padding-left : 20px; padding-right: 35px">分销伙伴自购奖励</span>
+                    <input type="text" class="Table_input amount-input Table-formData" id="kolBuyAmount" value="0" msg="金额不能为空" notNull="true" name="kolBuyAmount" placeholder="输入金额" onkeyup="value=value.replace(/[^\d.]/g,'')" />&nbsp;&nbsp;元/每商品
+                </div>
+            </div>
+            <div id="spanRewardSource">
+                <div style="padding-top: 20px">
+                    <span style="padding-right: 80px">奖励冻结时间</span>
+                    <span class="Table_input amount-input Table-formData" id="freezeDays_span" name="freezeDays"></span> 天
+                </div>
+
+                <div class="reward-config-title">
+                    KOL分销奖励
+                </div>
+                <div class="reward-config-div" name="kolLevelOne">
+                    <span style="padding-left : 20px; padding-right : 60px;">一级分销奖励</span>
+                    <span class="Table_input amount-input Table-formData" id="kolLevelOneAmount_span" name="amount"></span> 元/每商品
+                </div>
+                <div class="reward-config-div" name="kolLevelTwo">
+                    <span style="padding-left : 20px; padding-right : 60px;">二级分销奖励</span>
+                    <span class="Table_input amount-input Table-formData" id="kolLevelTwoAmount_span" name="amount"></span> 元/每商品
+                </div>
+
+                <div class="reward-config-title">
+                    非KOL分销奖励
+                </div>
+                <div class="reward-config-div" name="nonKolLevelOne">
+                    <span style="padding-left : 20px; padding-right : 60px;">一级分销奖励</span>
+                    <span class="Table_input amount-input Table-formData" id="noKolAmount_span" name="amount"></span> 元/每商品
+                </div>
+
+                <div class="reward-config-title">
+                    自购奖励
+                </div>
+                <div class="reward-config-div" name="groupleaderKol">
+                    <span style="padding-left : 20px; padding-right: 35px">分销伙伴自购奖励</span>
+                    <span class="Table_input amount-input Table-formData" id="kolBuyAmount_span" name="amount"></span> 元/每商品
+                </div>
+            </div>
+
+            <div class="reward-config-title">
+                商户奖励
+            </div>
+            <div name="retailer" style="display: flex; flex-direction: row; align-items: center">
+                <span style="padding-left : 20px; padding-right: 60px">商户分润奖励</span>
+                <div id="inputReward">
+                    <input type="text" class="Table_input amount-input Table-formData" msg="奖励不能为空" id="rewardInput" notNull="true" name="retailerAwardAmount" placeholder="元" onkeyup="value=value.replace(/[^\d]/g,'')" oninput="setRetailerAward()" />&nbsp;&nbsp;元/每商品
+                </div>
+                <div id="spanReward">
+                    <span class="Table_input amount-input Table-formData" name="retailerReward" id="rewardSpan"></span> 元/每商品
+                </div>
+            </div>
+        </div>
+        <div style="text-align: center;">
+            <input type="button" class="Table_button" value="保存设置" onclick="upsertGroupProduct()" />
+        </div>
+    </form>
+</body>
+<script>
+
+    // $("#template").change(function(){
+    //     var testval=$("#template").val();
+    //     $("#"+testval).show().siblings().hide();
+    //     $("#"+testval).find(".none").removeAttr("display:none");
+    //     $("#"+testval).siblings().find(".none").attr("display:block");
+    //     if(testval == "Template1"){
+    //         $(":radio[name='template'][value='1']").prop("checked", "checked");
+    //         $("#questionForm .delete").css("display","block")
+    //     }else if(testval == "Template2"){
+    //         $(":radio[name='template'][value='2']").prop("checked", "checked");
+    //         $("#questionForm .delete").css("display","block")
+    //     }else if(testval == "Template3"){
+    //         $(":radio[name='template'][value='7']").prop("checked", "checked");
+    //         $("#questionForm .delete").css("display","block")
+    //     }else{
+    //         $("#questionForm .delete").css("display","none")
+    //     }
+    // });
+    $('#no_custom').prop('checked', true);
+    // $('#no_custom').removeAttr('checked');
+    // $('#is_custom').prop('checked', true);
+    // $("#settlement_policy_pay").show();
+    // $("#settlement_policy_finish").show();
+    // $("#settlement_policy_pay_des").show();
+    // $("#settlement_policy_finish_des").show();
+    $('#no_custom').click(function(){
+        // $("#settlement_policy_pay").addClass("none");
+        // $("#settlement_policy_finish").addClass("none");
+        // $("#settlement_policy_pay_des").addClass("none");
+        // $("#settlement_policy_finish_des").addClass("none");
+        $("#settlement_policy_pay").hide();
+        $("#settlement_policy_finish").hide();
+        $("#settlement_policy_pay_des").hide();
+        $("#settlement_policy_finish_des").hide();
+        $('#settlement_policy_finish_rd').removeAttr('checked');
+    })
+    $('#is_custom').click(function(){
+        $("#settlement_policy_pay").show();
+        $("#settlement_policy_finish").show();
+        $("#settlement_policy_pay_des").show();
+        $("#settlement_policy_finish_des").show();
+        $('#settlement_policy_finish_rd').prop('checked', true);
+    })
+    function formatFormPost(formId){
+    var t = $("#"+formId).serializeArray();
+    console.log('t',t)
+    var data = {};
+    for(var i =0;i<t.length;i++){
+    	var value = t[i].value;
+    	var name = t[i].name;
+        data[name] = t[i].value;
+    }
+    return data;
+};
+    function upsertGroupProduct(){
+        var data = formatFormPost("groupProductForm");
+        console.log("=>data",data)
+    }
+</script>
+</html>
